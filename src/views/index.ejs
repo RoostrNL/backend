@@ -8,9 +8,22 @@
   <div id="enroll_code_card" class="card">
     <h1 class="squish-bottom">Enroll codes</h1>
     <p class="desc">
-      These codes are used to enroll a new screen or scanner. Press `view` to show a scannable code to enroll a device.
+      These codes are used to enroll a new screen or scanner. Press `view` to
+      show a scannable code to enroll a device.
     </p>
   </div>
+
+  <dialog id="enroll_code_popup" class="popup">
+    <div class="popup-content card wide-flex-row">
+      <div id="enroll_code_qr" alt="Enroll QR Code" class="qr_code"></div>
+      <div>
+        <h1 class="squish-bottom">Device enrollment</h1>
+        <p id="enroll_code_remaining" class="desc"></p>
+        <code id="enroll_code_code" class="monospace">Loading</code>
+      </div>
+    </div>
+  </dialog>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="module" src="/js/index.js"></script>

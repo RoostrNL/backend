@@ -1,6 +1,10 @@
 @import url('/vendor/catppuccin/catppuccin.css');
 
 body {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
   margin: 0;
   padding: 0;
   background-color: var(--ctp-mocha-base);
@@ -34,6 +38,36 @@ button[disabled] {
   cursor: not-allowed;
 }
 
+code {
+  font-size: 1.5rem;
+  background-color: var(--ctp-mocha-surface0);
+
+  padding: 0.2rem 0.3rem 0.1rem;
+  border-radius: 0.2rem;
+}
+.qr_code {
+  /* padding: 1.2em; */
+  /* margin: 0 10%; */
+  /* background-color: var(--ctp-mocha-text); */
+  /* border-radius: 1em; */
+  /* align-self: stretch; */
+  height: 100%;
+  flex: 0.6;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+.qr_code img,
+.qr_code canvas {
+  display: block;
+  object-fit: contain;
+  aspect-ratio: 1;
+  padding: 5%;
+  background-color: var(--ctp-mocha-text);
+  border-radius: 1em;
+  margin: 7.5%;
+}
+
 /* #region Navigation bar styling */
 
 .navbar {
@@ -60,6 +94,7 @@ button[disabled] {
 /* #region General body styling */
 
 main {
+  flex-grow: 1;
   padding: 15px 10px;
 }
 #app {
@@ -87,9 +122,17 @@ h1.squish-bottom {
   gap: 0.25em;
 }
 
-@media screen and (max-width: 10000px) {
+@media screen and (max-width: 1200px) {
   .mobile-hidden {
     display: none;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .wide-flex-row {
+    display: flex;
+    flex-direction: row !important; /* TODO: Make this not !important and still work */
+    justify-content: space-around !important; /* TODO: Make this not !important and still work */
+    /* gap: 30px; */
   }
 }
 
@@ -165,6 +208,33 @@ table {
       white-space: nowrap;
     }
   }
+}
+
+/* #endregion */
+/* #region QR popup */
+dialog {
+  border: none;
+  color: inherit;
+}
+.popup:open {
+  display: flex;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+
+  justify-content: center;
+  align-items: center;
+}
+.popup-content {
+  padding: 15px;
+  box-sizing: border-box;
+  width: 80%;
+  height: 80%;
 }
 
 /* #endregion */

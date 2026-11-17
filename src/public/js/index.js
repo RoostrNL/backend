@@ -33,6 +33,38 @@ const deviceTokenContainer = getElementById(
 );
 const enrollCodeContainer = getElementById('enroll_code_card', HTMLDivElement);
 
+const enrollCodeDialog = getElementById('enroll_code_popup', HTMLDialogElement);
+enrollCodeDialog.addEventListener('click', (e) => {
+  if (e.target == enrollCodeDialog) {
+    enrollCodeDialog.close();
+  }
+});
+
+// #region dynamic functions
+/**
+ *
+ * @param {import('./api.js').EnrollCode} enroll_code
+ */
+function showEnrollCodeDialog(enroll_code) {
+  const qrDiv = getElementById('enroll_code_qr', HTMLDivElement);
+  const codeText = getElementById('enroll_code_code', HTMLElement);
+  const remainingText = getElementById('enroll_code_remaining', HTMLElement);
+
+  qrDiv.innerHTML = "";
+  new window.QRCode('enroll_code_qr', {
+    text: `${window.location},${enroll_code.code}`,
+    colorDark: '#1e1e2e',
+    colorLight: '#cdd6f4',
+  });
+
+  codeText.innerText = String(enroll_code.code);
+  remainingText.innerText = `${enroll_code.usesRemaining == -1 ? 'Unlimited' : enroll_code.usesRemaining} uses`;
+
+  enrollCodeDialog.show();
+}
+
+// #endregion
+
 // #region device tokens
 const refreshDeviceTokenTableButton = createCallbackButton(
   'Refresh',
@@ -103,7 +135,7 @@ const enrollCodeTable = createTable({
     { value: 'Remaining Uses' },
     { value: 'Issued At', width: 12.5 },
     { value: 'Valid Until', width: 12.5 },
-    { value: refreshEnrollCodeTableButton, width: 5.75 },
+    { value: refreshEnrollCodeTableButton, width: 10 },
   ],
 });
 enrollCodeContainer.appendChild(enrollCodeTable);
@@ -120,10 +152,23 @@ async function updateEnrollCodeTable() {
     token.usesRemaining >= 0 ? token.usesRemaining : 'Unlimited',
     new Date(token.issuedAt * 1000).toLocaleString(),
     new Date(token.validUntil * 1000).toLocaleString(),
-    createCallbackButton('Delete', 'action-danger', async () => {
-      await enroll_code.delete(token.id);
-      updateEnrollCodeTable();
-    }),
+    createCallbackButtons(
+      [
+        'View',
+        'jssel-view',
+        async () => {
+          showEnrollCodeDialog(token);
+        },
+      ],
+      [
+        'Delete',
+        'action-danger',
+        async () => {
+          await enroll_code.delete(token.id);
+          updateEnrollCodeTable();
+        },
+      ],
+    ),
   ]);
 
   updateTable(enrollCodeTable, rows);
@@ -131,4 +176,4 @@ async function updateEnrollCodeTable() {
 // #endregion
 
 updateDeviceTokenTable();
-updateEnrollCodeTable();
+await updateEnrollCodeTable();
